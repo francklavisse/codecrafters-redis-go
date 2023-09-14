@@ -5,6 +5,7 @@ import (
 	"net"
 	"os"
 	s "strings"
+	"time"
 )
 
 func readCmd(conn net.Conn) ([]string, error) {
@@ -21,17 +22,25 @@ func readCmd(conn net.Conn) ([]string, error) {
 	return cmd, nil
 }
 
-var db = make(map[string]string)
+type Data struct {
+	PX        int
+	CreatedAt time.Time
+	Value     string
+}
+
+var db = make(map[string]Data)
 
 func getResponse(cmd []string) string {
 	switch cmd[2] {
 	case "ECHO", "echo":
 		return "+" + cmd[4] + "\r\n"
 	case "SET", "set":
-		db[cmd[4]] = cmd[6]
+		fmt.Println(cmd)
+		d := Data{Value: cmd[6]}
+		db[cmd[4]] = d
 		return "+OK\r\n"
 	case "GET", "get":
-		return "+" + db[cmd[4]] + "\r\n"
+		return "+" + db[cmd[4]].Value + "\r\n"
 	default:
 		return "+PONG\r\n"
 	}
