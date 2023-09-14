@@ -17,7 +17,7 @@ func readCmd(conn net.Conn) ([]string, error) {
 
 	receivedData := b[:n]
 	cmd := s.Split(string(receivedData), "\r\n")
-
+	fmt.Println(cmd)
 	return cmd, nil
 }
 
