@@ -24,20 +24,20 @@ func readCmd(conn net.Conn) ([]string, error) {
 func getResponse(cmd []string) string {
 	db := make(map[string]string)
 
-	fmt.Println(cmd)
-
-	switch cmd[2] {
-	case "ECHO", "echo":
-		return "+" + cmd[4] + "\r\n"
-	case "SET", "set":
-		fmt.Println(db)
-		db[cmd[4]] = cmd[6]
-		return "+OK\r\n"
-	case "GET", "get":
-		return "+" + db[cmd[4]] + "\r\n"
-	default:
-		return "+PONG\r\n"
-	}
+	return func() string {
+		switch cmd[2] {
+		case "ECHO", "echo":
+			return "+" + cmd[4] + "\r\n"
+		case "SET", "set":
+			fmt.Println(db)
+			db[cmd[4]] = cmd[6]
+			return "+OK\r\n"
+		case "GET", "get":
+			return "+" + db[cmd[4]] + "\r\n"
+		default:
+			return "+PONG\r\n"
+		}
+	}()
 }
 
 func main() {
