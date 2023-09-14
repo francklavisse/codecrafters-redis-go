@@ -23,7 +23,7 @@ func main() {
 
 	var b []byte
 
-	for {
+	for i := 0; i < 2; i++ {
 		_, err = conn.Read(b)
 		if err != nil {
 			fmt.Println("Failed to read")
