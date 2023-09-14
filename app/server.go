@@ -32,6 +32,8 @@ func getResponse(cmd []string) string {
 	case "SET", "set":
 		db[cmd[4]] = cmd[6]
 		return "+OK\r\n"
+	case "GET", "get":
+		return "+" + db[cmd[4]] + "\r\n"
 	default:
 		return "+PONG\r\n"
 	}
