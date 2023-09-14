@@ -19,7 +19,7 @@ func readCmd(conn net.Conn) ([]string, error) {
 
 	receivedData := b[:n]
 	cmd := s.Split(string(receivedData), "\r\n")
-	fmt.Println(cmd)
+
 	return cmd, nil
 }
 
@@ -42,6 +42,8 @@ func getResponse(cmd []string) string {
 			px, err := strconv.Atoi(cmd[9])
 			if err == nil {
 				d.PX = px
+			} else {
+				fmt.Println(err.Error())
 			}
 		}
 		db[cmd[4]] = d
