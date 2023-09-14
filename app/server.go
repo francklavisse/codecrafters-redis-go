@@ -28,19 +28,17 @@ func main() {
 			for {
 				var b = make([]byte, 1000)
 				n, err := conn.Read(b)
+
 				if err != nil {
 					fmt.Println(err.Error())
 					break
 				}
 
 				receivedData := b[:n]
-
 				cmd := s.Split(string(receivedData), "\r\n")
-				fmt.Println(cmd)
 
 				if s.ToUpper(cmd[2]) == "ECHO" {
-					resp := s.Join([]string{"+", cmd[4], "\r\n"}, "")
-					_, err = conn.Write([]byte(resp))
+					_, err = conn.Write([]byte("+" + cmd[4] + "\r\n"))
 					if err != nil {
 						fmt.Println(err.Error())
 						break
