@@ -22,6 +22,10 @@ func readCmd(conn net.Conn) ([]string, error) {
 }
 
 func getResponse(cmd []string) string {
+	// db := make(map[string]string)
+
+	fmt.Println(cmd)
+
 	switch cmd[2] {
 	case "ECHO", "echo":
 		return "+" + cmd[4] + "\r\n"
