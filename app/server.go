@@ -7,6 +7,29 @@ import (
 	s "strings"
 )
 
+func readCmd(conn net.Conn) ([]string, error) {
+	var b = make([]byte, 1000)
+	n, err := conn.Read(b)
+
+	if err != nil {
+		return nil, err
+	}
+
+	receivedData := b[:n]
+	cmd := s.Split(string(receivedData), "\r\n")
+
+	return cmd, nil
+}
+
+func getResponse(cmd []string) string {
+	switch cmd[2] {
+	case "ECHO", "echo":
+		return "+" + cmd[4] + "\r\n"
+	default:
+		return "+PONG\r\n"
+	}
+}
+
 func main() {
 
 	l, err := net.Listen("tcp", "0.0.0.0:6379")
@@ -26,31 +49,19 @@ func main() {
 			defer conn.Close()
 
 			for {
-				var b = make([]byte, 1000)
-				n, err := conn.Read(b)
-
+				cmd, err := readCmd(conn)
 				if err != nil {
 					fmt.Println(err.Error())
 					break
 				}
 
-				receivedData := b[:n]
-				cmd := s.Split(string(receivedData), "\r\n")
+				resp := getResponse(cmd)
 
-				if s.ToUpper(cmd[2]) == "ECHO" {
-					_, err = conn.Write([]byte("+" + cmd[4] + "\r\n"))
-					if err != nil {
-						fmt.Println(err.Error())
-						break
-					}
-				} else {
-					_, err = conn.Write([]byte("+PONG\r\n"))
-					if err != nil {
-						fmt.Println(err.Error())
-						break
-					}
+				_, err = conn.Write([]byte(resp))
+				if err != nil {
+					fmt.Println(err.Error())
+					break
 				}
-
 			}
 		}(conn)
 	}
