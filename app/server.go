@@ -53,10 +53,10 @@ func getResponse(cmd []string) string {
 	case "GET", "get":
 		d := db[cmd[4]]
 		fmt.Println(d)
-		if d.PX != -1 && d.CreatedAt.Add(time.Duration(d.PX)*time.Millisecond).UTC().Before(time.Now()) {
-			db[cmd[4]] = Data{}
-			return "+NULL\r\n"
-		}
+		// if d.PX != -1 && d.CreatedAt.Add(time.Duration(d.PX)*time.Millisecond).UTC().Before(time.Now()) {
+		// 	db[cmd[4]] = Data{}
+		// 	return "+NULL\r\n"
+		// }
 		return "+" + db[cmd[4]].Value + "\r\n"
 	default:
 		return "+PONG\r\n"
