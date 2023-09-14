@@ -25,7 +25,6 @@ func main() {
 
 	for {
 		_, err = conn.Read(b)
-
 		if err != nil {
 			fmt.Println("Failed to read")
 			os.Exit(1)
