@@ -39,8 +39,7 @@ func main() {
 				fmt.Println(cmd)
 
 				if s.ToUpper(cmd[2]) == "ECHO" {
-					cmd = s.Split(string(b), "\r\n")
-					resp := s.Join([]string{"+", cmd[2], "\r\n"}, "")
+					resp := s.Join([]string{"+", cmd[4], "\r\n"}, "")
 					_, err = conn.Write([]byte(resp))
 					if err != nil {
 						fmt.Println(err.Error())
