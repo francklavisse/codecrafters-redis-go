@@ -18,11 +18,7 @@ func main() {
 	for i := 0; i < 10; i++ {
 		go func(done chan bool) {
 			conn, err := l.Accept()
-
-			defer func() {
-				conn.Close()
-				done <- true
-			}()
+			defer conn.Close()
 
 			for {
 				if err != nil {
