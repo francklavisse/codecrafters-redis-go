@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net"
 	"os"
+	"strconv"
 	s "strings"
 	"time"
 )
@@ -36,10 +37,20 @@ func getResponse(cmd []string) string {
 		return "+" + cmd[4] + "\r\n"
 	case "SET", "set":
 		fmt.Println(cmd)
-		d := Data{Value: cmd[6]}
+		d := Data{Value: cmd[6], CreatedAt: time.Now(), PX: -1}
+		if len(cmd) > 6 && (cmd[7] == "px" || cmd[7] == "PX") {
+			px, err := strconv.Atoi(cmd[9])
+			if err == nil {
+				d.PX = px
+			}
+		}
 		db[cmd[4]] = d
 		return "+OK\r\n"
 	case "GET", "get":
+		d := db[cmd[4]]
+		if d.PX != -1 && d.CreatedAt.Add(time.Duration(d.PX)*time.Millisecond).UTC().Before(time.Now()) {
+			return "+NULL\r\n"
+		}
 		return "+" + db[cmd[4]].Value + "\r\n"
 	default:
 		return "+PONG\r\n"
