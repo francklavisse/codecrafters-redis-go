@@ -7,6 +7,7 @@ import (
 )
 
 func main() {
+
 	l, err := net.Listen("tcp", "0.0.0.0:6379")
 	if err != nil {
 		fmt.Println("Failed to bind to port 6379")
@@ -21,9 +22,8 @@ func main() {
 		os.Exit(1)
 	}
 
-	var b []byte
-
-	for i := 0; i < 2; i++ {
+	for {
+		var b = make([]byte, 1000)
 		_, err = conn.Read(b)
 		if err != nil {
 			fmt.Println("Failed to read")
