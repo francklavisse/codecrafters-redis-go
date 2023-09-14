@@ -30,6 +30,7 @@ func getResponse(cmd []string) string {
 	case "ECHO", "echo":
 		return "+" + cmd[4] + "\r\n"
 	case "SET", "set":
+		fmt.Println(db)
 		db[cmd[4]] = cmd[6]
 		return "+OK\r\n"
 	case "GET", "get":
