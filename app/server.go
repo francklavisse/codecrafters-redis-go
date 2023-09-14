@@ -32,6 +32,9 @@ func main() {
 					break
 				}
 
+				s := string(b)
+				fmt.Println(s)
+
 				_, err = conn.Write([]byte("+PONG\r\n"))
 				if err != nil {
 					fmt.Println(err.Error())
