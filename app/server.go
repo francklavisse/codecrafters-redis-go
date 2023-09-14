@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net"
 	"os"
-	"strings"
+	s "strings"
 )
 
 func main() {
@@ -27,26 +27,20 @@ func main() {
 
 			for {
 				var b = make([]byte, 1000)
-				_, err = conn.Read(b)
+				n, err := conn.Read(b)
 				if err != nil {
 					fmt.Println(err.Error())
 					break
 				}
 
-				s := strings.Split(string(b), "\r\n")
+				receivedData := b[:n]
 
-				if s[2] == "ECHO" {
-					_, err = conn.Write([]byte("+PONG\r\n"))
-					if err != nil {
-						fmt.Println(err.Error())
-						break
-					}
+				cmd := s.Split(string(receivedData), "\r\n")
+				fmt.Println(cmd)
 
-					b = make([]byte, 1000)
-					_, err = conn.Read(b)
-
-					s = strings.Split(string(b), "\r\n")
-					resp := strings.Join([]string{"+", s[2], "\r\n"}, "")
+				if s.ToUpper(cmd[2]) == "ECHO" {
+					cmd = s.Split(string(b), "\r\n")
+					resp := s.Join([]string{"+", cmd[2], "\r\n"}, "")
 					_, err = conn.Write([]byte(resp))
 					if err != nil {
 						fmt.Println(err.Error())
