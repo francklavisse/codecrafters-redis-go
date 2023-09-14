@@ -33,6 +33,7 @@ func getResponse(cmd []string) string {
 			db[cmd[4]] = cmd[6]
 			return "+OK\r\n"
 		case "GET", "get":
+			fmt.Println(db)
 			return "+" + db[cmd[4]] + "\r\n"
 		default:
 			return "+PONG\r\n"
