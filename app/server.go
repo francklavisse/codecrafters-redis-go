@@ -38,7 +38,7 @@ func getResponse(cmd []string) string {
 	case "SET", "set":
 		d := Data{Value: cmd[6], CreatedAt: time.Now(), PX: -1}
 		fmt.Println(cmd)
-		fmt.Println(len(cmd))
+		fmt.Println(len(cmd[8]))
 		if cmd[8] == "px" || cmd[8] == "PX" {
 			px, err := strconv.Atoi(cmd[10])
 			if err == nil {
