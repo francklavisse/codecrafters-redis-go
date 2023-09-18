@@ -38,8 +38,6 @@ func getResponse(cmd []string) string {
 	case "SET", "set":
 		d := Data{Value: cmd[6], CreatedAt: time.Now(), PX: -1}
 		if cmd[7] != "" && (cmd[8] == "px" || cmd[8] == "PX") {
-			fmt.Println(cmd[7])
-			fmt.Println(cmd[8])
 			px, err := strconv.Atoi(cmd[10])
 			if err == nil {
 				d.PX = px
@@ -51,11 +49,10 @@ func getResponse(cmd []string) string {
 		return "+OK\r\n"
 	case "GET", "get":
 		d := db[cmd[4]]
-		fmt.Println(d)
-		// if d.PX != -1 && d.CreatedAt.Add(time.Duration(d.PX)*time.Millisecond).UTC().Before(time.Now()) {
-		// 	db[cmd[4]] = Data{}
-		// 	return "+NULL\r\n"
-		// }
+		if d.PX != -1 && d.CreatedAt.Add(time.Duration(d.PX)*time.Millisecond).UTC().Before(time.Now()) {
+			db[cmd[4]] = Data{}
+			return "+NULL\r\n"
+		}
 		return "+" + db[cmd[4]].Value + "\r\n"
 	default:
 		return "+PONG\r\n"
