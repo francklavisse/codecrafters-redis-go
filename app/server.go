@@ -51,7 +51,7 @@ func getResponse(cmd []string) string {
 		d := db[cmd[4]]
 		if d.PX != -1 && d.CreatedAt.Add(time.Duration(d.PX)*time.Millisecond).UTC().Before(time.Now()) {
 			db[cmd[4]] = Data{}
-			return "_\r\n"
+			return "$-1\r\n"
 		}
 		return "+" + db[cmd[4]].Value + "\r\n"
 	default:
