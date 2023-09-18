@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"net"
 	"os"
-	"strconv"
 	s "strings"
 	"time"
 )
@@ -40,14 +39,14 @@ func getResponse(cmd []string) string {
 		fmt.Println(cmd)
 		fmt.Println(cmd[8])
 		fmt.Println(len(cmd))
-		if len(cmd) > 6 && cmd[8] == "px" || cmd[8] == "PX" {
-			px, err := strconv.Atoi(cmd[10])
-			if err == nil {
-				d.PX = px
-			} else {
-				fmt.Println(err.Error())
-			}
-		}
+		// if len(cmd) > 6 && cmd[8] == "px" || cmd[8] == "PX" {
+		// 	px, err := strconv.Atoi(cmd[10])
+		// 	if err == nil {
+		// 		d.PX = px
+		// 	} else {
+		// 		fmt.Println(err.Error())
+		// 	}
+		// }
 		db[cmd[4]] = d
 		return "+OK\r\n"
 	case "GET", "get":
